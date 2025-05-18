@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 # Default configuration values
-DEFAULT_PORT_FILE = "/var/run/auto-natpmp/port"
+DEFAULT_PORT_FILE = "/tmp/auto-natpmp-port"
 DEFAULT_GATEWAY_IP = "10.2.0.1"
 DEFAULT_FORWARD_LIFETIME = 60  # seconds
 DEFAULT_SLEEP_TIME = 45  # seconds
