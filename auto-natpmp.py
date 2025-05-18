@@ -45,15 +45,13 @@ def parse_arguments():
     
     return parser.parse_args()
 
-def setup_logging(log_file, log_level):
+def setup_logging(log_file=None, log_level='DEBUG'):
     """Setup logging configuration."""
+    handler = logging.StreamHandler() if log_file is None else logging.FileHandler(log_file)
     logging.basicConfig(
         level=getattr(logging, log_level),
         format='%(asctime)s - %(levelname)s - %(message)s',
-        handlers=[
-            logging.FileHandler(log_file),
-            logging.StreamHandler()
-        ]
+        handlers=[handler]
     )
     return logging.getLogger("auto-natpmp")
 
@@ -62,7 +60,7 @@ def setup_port_directory(port_file, logger):
     port_dir = os.path.dirname(port_file)
     try:
         Path(port_dir).mkdir(parents=True, exist_ok=True)
-        logger.info(f"Port directory ensured: {port_dir}")
+        logger.debug(f"Port directory ensured: {port_dir}")
     except Exception as e:
         logger.error(f"Failed to create port directory: {e}")
         sys.exit(1)
@@ -72,7 +70,7 @@ def save_port_to_file(port, port_file, logger):
     try:
         with open(port_file, 'w') as f:
             f.write(str(port))
-        logger.info(f"Port {port} saved to {port_file}")
+        logger.debug(f"Port {port} saved to {port_file}")
     except Exception as e:
         logger.error(f"Failed to write port to file: {e}")
 
@@ -148,7 +146,8 @@ def main(port_file=DEFAULT_PORT_FILE,
     
     try:
         while True:
-            logger.info(f"Running NAT-PMP forwarding at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+            now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            logger.debug(f"Running NAT-PMP forwarding at {now}")
             
             # Run UDP forwarding
             udp_output = run_natpmpc_command("udp", external_port, local_port, 
@@ -195,8 +194,7 @@ def main(port_file=DEFAULT_PORT_FILE,
         if os.path.exists(port_file):
             os.remove(port_file)
             logger.info(f"Removed port file: {port_file}")
-    
-    return 0
+        return 0
 
 if __name__ == "__main__":
     # Parse command line arguments only when run as a script
