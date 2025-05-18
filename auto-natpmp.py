@@ -16,7 +16,6 @@ DEFAULT_PORT_FILE = "/var/run/auto-natpmp/port"
 DEFAULT_GATEWAY_IP = "10.2.0.1"
 DEFAULT_FORWARD_LIFETIME = 60  # seconds
 DEFAULT_SLEEP_TIME = 45  # seconds
-DEFAULT_LOG_FILE = "/var/log/auto-natpmp/auto-natpmp.log"
 DEFAULT_LOG_LEVEL = "INFO"
 DEFAULT_LOCAL_PORT = 0
 DEFAULT_EXTERNAL_PORT = 1
@@ -33,8 +32,8 @@ def parse_arguments():
                         help=f'Port forwarding lifetime in seconds (default: {DEFAULT_FORWARD_LIFETIME})')
     parser.add_argument('--sleep-time', type=int, default=DEFAULT_SLEEP_TIME,
                         help=f'Sleep time between iterations in seconds (default: {DEFAULT_SLEEP_TIME})')
-    parser.add_argument('--log-file', default=DEFAULT_LOG_FILE,
-                        help=f'Log file location (default: {DEFAULT_LOG_FILE})')
+    parser.add_argument('--log-file', default=None,
+                        help=f'Log file location (default: print to stdout/stderr)')
     parser.add_argument('--log-level', default=DEFAULT_LOG_LEVEL,
                         choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
                         help=f'Logging level (default: {DEFAULT_LOG_LEVEL})')
